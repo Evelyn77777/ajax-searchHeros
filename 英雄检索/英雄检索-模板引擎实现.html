@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <img src="./img/header.png" alt="" class="header" />
+    <div class="cq-wrap">
+      <!-- 导航 -->
+      <div class="nav">
+        <ul>
+          <li><img src="./img/sword.png" alt="" /><span>剑士</span></li>
+          <li><img src="./img/knight.png" alt="" /> <span>骑士</span></li>
+          <li><img src="./img/Archer.png" alt="" /> <span>弓手</span></li>
+          <li><img src="./img/hunter.png" alt="" /> <span>猎人</span></li>
+          <li><img src="./img/magic.png" alt="" /> <span>法师</span></li>
+          <li><img src="./img/flamen.png" alt="" /> <span>祭司</span></li>
+        </ul>
+      </div>
+      <!-- table -->
+      <table class="cq-list">
+        <thead>
+          <th>勇士</th>
+          <th>技能</th>
+          <th>武器</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <img
+                class="icon"
+                src="http://p6.qhimg.com/dr/72__/t01b8063ea608652431.png"
+                alt=""
+              />
+              <span>
+                涅斯军长官尤莉娅
+              </span>
+            </td>
+            <td>
+              <img
+                class="skill"
+                src="http://p9.qhimg.com/dr/52__/t01087d8e61575ab25d.png"
+                alt=""
+              />
+              注射!
+            </td>
+            <td>
+              <img
+                class="weapon"
+                src="http://p6.qhimg.com/dr/45__/t0178ac936dcb72650f.png"
+                alt=""
+              />
+              疫苗-G
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 遮罩层 -->
+    <div class="cover" style="display: none">
+      <img class="loading" src="./img/loading01.gif" alt="" />
+    </div>
+  </body>
+</html>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<!-- 模板引擎 -->
+<script src="./js/template-web.js"></script>
+<!-- 模板 -->
+<script id="cq" type="text/html">
+  {{each data.heros}}
+  <tr>
+      <td>
+        <img class="icon" src="{{$value.heroIcon}}" alt="">
+        <span>{{$value.heroName}}</span>
+      </td>
+      <td>
+        <img class="skill" src="{{$value.skillIcon}}" alt="">
+        {{$value.skillName}}
+      </td>
+      <td>
+        <img class="weapon" src="{{$value.weaponIcon}}" alt="">
+        {{$value.weaponName}}
+      </td>
+    </tr>
+    {{/each}}
+</script>
+<script>
+  $(function() {
+    // 绑定点击事件
+    $('.nav li').click(function() {
+      $(this)
+        .addClass('active')
+        .siblings()
+        .removeClass('active')
+
+      // 数据获取
+      $.ajax({
+        url: 'https://autumnfish.cn/api/cq/category',
+        data: {
+          type: $(this)
+            .find('span')
+            .text()
+        },
+        success: function(backData) {
+          // console.log(backData)
+          $('tbody').html(template('cq', backData))
+        }
+      })
+    })
+    // 使用事件绑定
+    $('tbody').on('click', '.icon', function() {
+      // 弹出遮罩层
+      $('.cover')
+        .show()
+        .find('img')
+        .attr('src', './img/loading01.gif')
+      $.ajax({
+        url: 'https://autumnfish.cn/api/cq/gif',
+        data: {
+          name: $(this)
+            .siblings('span')
+            .text()
+        },
+        success: function(backData) {
+          // console.log(backData)
+          $('.loading').attr('src', backData.data.skillGif)
+        }
+      })
+    })
+
+    // 遮罩层点击关闭
+    $('.cover').click(function() {
+      $(this).hide()
+    })
+    // 默认点击第一个
+    $('.nav li:first').click()
+
+    // 获取随机背景图
+    $.ajax({
+      type: 'get',
+      url: 'http://acg.bakayun.cn/randbg.php',
+      data: {
+        Type: 'json',
+        t: 'dfproject'
+      },
+      dataType: 'json',
+      success(backData) {
+        console.log(backData)
+        $('body').css('background-image', 'url("' + backData.ImgUrl + '")')
+        // $('body').css('background','hotpink')
+      }
+    })
+  })
+</script>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  // 1.实例化ajax对象 (小黄人对象)
+  var xhr = new XMLHttpRequest()
+  // 2.设置请求行 （方法，地址）
+  // xhr.open('post', 'http://www.tuling123.com/openapi/api')
+  xhr.open('post', 'http://www.tuling123.com/openapi/apibucunzaidedivi')
+  // 3.设置请求头(post才需要)
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+  // 4.注册回调函数
+  xhr.onload = function() {
+    console.log(xhr.readyState)
+  }
+  // 5.发送请求 请求主体
+  xhr.send('key=d7c82ebd8b304abeacc73b366e42b9ed&info=你是男是女')
+</script>

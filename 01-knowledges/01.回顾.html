@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<!-- 导入 -->
+<script src="./lib/template-web.js"></script>
+<!-- 导入jQ -->
+<script src="./lib/jquery-1.12.4.min.js"></script>
+<!-- 定义模板 -->
+<script id="person" type="text/html">
+  <h2>我的名字是{{name}}</h2>
+  <h3>我有一堆好朋友</h3>
+  <ul>
+    {{each friend}}
+      <li>
+        朋友的名字是{{$value.name}}
+        {{if $value.skill}}
+          朋友的技能是{{$value.skill}}
+        {{/if}}
+        {{if $value.color}}
+          朋友的毛色是{{$value.color}}
+        {{/if}}
+        {{if $value.message}}
+          朋友的口头禅是{{$value.message}}
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+</script>
+<script>
+  // 数据
+  var person = {
+    name: '眼光龙',
+    friend: [
+      {
+        name: '嘉豪',
+        skill: '打球'
+      },
+      {
+        name: '喜洋洋',
+        color: 'white'
+      },
+      {
+        name: '美少女战士',
+        message: '代表月亮消灭你'
+      }
+    ]
+  }
+  // 调用方法
+  var html = template('person', person)
+  document.body.innerHTML = html
+
+  // jQuery的ajax
+  // $.get()
+  // $.post()
+  // $.ajax()
+  $.ajax({
+    // url:'https://autumnfish.cn/api/cq',
+    // url:'https://api.asilu.com/ip/',
+    url:'	https://api.asilu.com/images/baidu/',
+    // type: 'get',
+    dataType:'jsonp',
+    // data: {
+    //   ip: 'www.baidu.com'
+    // },
+    // dataType:'',
+    success: function(backData) {
+      console.log(backData)
+    }
+  })
+</script>
